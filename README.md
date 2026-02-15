@@ -78,7 +78,7 @@ def MaPremiereAPI():
 Mettez à jour votre serveur (séquence 3) et tappez **https://{Votre URL}/contact** dans votre URL et observez le résultat dans votre navigateur.  
 Notion acquises lors de cet exercice : Vous avez appris lors de cet exercice à créer des API (c'est à dire des routes) dans une application Python. Vous pouvez créer autant d'API (de routes) que vous le souhaitez dans votre application Python.  
   
-<sub>──────────</sub>
+<sub>_________________________________________________________________________</sub>
 ### Exercice 2 : Les données d'une API   
 ### Objectif : Utiliser les données issues d'une API externes pour créer une route adaptée à vos besoins  
 Pour commencer, copier l'URL ci-dessous dans un nouvel onglet de votre navigateur et observez le résultat :  
