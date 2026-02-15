@@ -73,7 +73,10 @@ L'exercice consiste à créer une nouvelle route accèssible depuis le chemin "/
 def MaPremiereAPI():
     return "<h2>Ma page de contact</h2>"  
 ```
-**Remarque importante** : Ce code est à ajouter après la ligne "app = Flask(__name__)" qui est le début de votre programme et avant le bloc "if __name__ == "__main__" à la fin du fichier.
+**Remarque importante** : Ce code ci-dessus est à ajouter dans la zone entre commentaires, c'est à dire **entre la ligne 10 à 15**.  
+
+Mettez à jour votre serveur (séquence 3) et tappez **https://{Votre URL}/contact** dans votre URL et observez le résultat dans votre navigateur.  
+
 
 ------------------------------------------------------------------------------------------------------
 PROJET METRIQUES
