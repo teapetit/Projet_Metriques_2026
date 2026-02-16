@@ -8,9 +8,6 @@ def hello_world():
     return render_template('hello.html')
 
 # Déposez votre code à partir d'ici :
-@app.route("/contact")
-def MaPremiereAPI():
-    return "<h2>mapagedecontact</h2>"  
 
 @app.get("/paris")
 def api_paris():
@@ -37,7 +34,9 @@ def mongraphique():
 @app.route("/histogramme")
 def mongraphique2():
     return render_template("graphique2.html")
-
+@app.route("/contact")
+def mapagedecontact():
+    return render_template("mapagedecontact.html")
 
 # Ne rien mettre après ce commentaire
     
