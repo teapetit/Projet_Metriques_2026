@@ -33,7 +33,10 @@ def api_paris():
 @app.route("/rapport")
 def mongraphique():
     return render_template("graphique.html")
-
+    
+@app.route("/histogramme")
+def mongraphique():
+    return render_template("graphique.html")
 
 # Ne rien mettre après ce commentaire
     
