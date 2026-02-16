@@ -41,10 +41,10 @@
     }
 
     async function fetchNoumeaData() {
-      const res = await fetch('/paris', { headers: { 'Accept': 'application/json' } });
+      const res = await fetch('/noumea', { headers: { 'Accept': 'application/json' } });
 
       if (!res.ok) {
-        throw new Error(`HTTP ${res.status} sur /paris`);
+        throw new Error(`HTTP ${res.status} sur /noumea`);
       }
 
       const json = await res.json();
@@ -94,7 +94,7 @@
       const chart = new google.visualization.LineChart(document.getElementById('chart'));
       chart.draw(data, options);
 
-      showStatus(`OK — ${rows.length} points chargés depuis /paris`);
+      showStatus(`OK — ${rows.length} points chargés depuis /noumea`);
     }
 
     function showStatus(msg) {
