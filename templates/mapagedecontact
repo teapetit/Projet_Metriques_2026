@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ma page de contact</title>
+
+  <style>
+    :root{
+      --bg: #0b1220;
+      --card: rgba(255,255,255,0.06);
+      --card2: rgba(255,255,255,0.10);
+      --text: #eaf0ff;
+      --muted: rgba(234,240,255,0.72);
+      --border: rgba(255,255,255,0.12);
+      --accent: #4f8cff;
+      --accent2: #7c5cff;
+      --danger: #ff5c7a;
+      --ok: #37d67a;
+      --shadow: 0 16px 60px rgba(0,0,0,0.45);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+    body{
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(1200px 700px at 15% 15%, rgba(79,140,255,0.30), transparent 60%),
+        radial-gradient(900px 600px at 85% 20%, rgba(124,92,255,0.25), transparent 60%),
+        radial-gradient(900px 600px at 60% 90%, rgba(55,214,122,0.18), transparent 60%),
+        var(--bg);
+      min-height: 100vh;
+      padding: 28px;
+    }
+
+    .wrap{
+      max-width: 980px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    @media (max-width: 860px){
+      .wrap{ grid-template-columns: 1fr; }
+      body{ padding: 18px; }
+    }
+
+    .hero{
+      padding: 26px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background: radial-gradient(450px 220px at 20% 0%, rgba(79,140,255,0.35), transparent 60%),
+                  radial-gradient(420px 240px at 90% 30%, rgba(124,92,255,0.30), transparent 60%);
+      filter: blur(2px);
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .hero > * { position: relative; }
+
+    h1{
+      margin: 0 0 10px 0;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      letter-spacing: 0.2px;
+    }
+
+    .subtitle{
+      margin: 0 0 18px 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .infoGrid{
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    @media (max-width: 520px){
+      .infoGrid{ grid-template-columns: 1fr; }
+    }
+
+    .pill{
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.05);
+      border-radius: 14px;
+      padding: 12px 12px;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .pill .icon{
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, rgba(79,140,255,0.35), rgba(124,92,255,0.28));
+      border: 1px solid rgba(255,255,255,0.14);
+      flex: 0 0 auto;
+    }
+
+    .pill b{ display:block; margin-bottom: 2px; }
+    .pill span{ color: var(--muted); font-size: 0.95rem; line-height: 1.35; }
+
+    .card{
+      padding: 22px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: rgba(255,255,255,0.06);
+      box-shadow: var(--shadow);
+    }
+
+    .card h2{
+      margin: 0 0 14px 0;
+      font-size: 1.15rem;
+      letter-spacing: 0.2px;
+    }
+
+    form{
+      display: grid;
+      gap: 12px;
+    }
+
+    .row{
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 520px){
+      .row{ grid-template-columns: 1fr; }
+    }
+
+    label{
+      font-size: 0.9rem;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    input, textarea{
+      width: 100%;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(12, 20, 38, 0.35);
+      color: var(--text);
+      outline: none;
+      transition: 160ms ease;
+      font-size: 1rem;
+    }
+
+    input::placeholder, textarea::placeholder{
+      color: rgba(234,240,255,0.45);
+    }
+
+    input:focus, textarea:focus{
+      border-color: rgba(79,140,255,0.65);
+      box-shadow: 0 0 0 4px rgba(79,140,255,0.18);
+      background: rgba(12, 20, 38, 0.55);
+    }
+
+    textarea{
+      min-height: 140px;
+      resize: vertical;
+    }
+
+    .actions{
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+
+    .btn{
+      border: 1px solid rgba(255,255,255,0.18);
+      background: linear-gradient(135deg, rgba(79,140,255,0.95), rgba(124,92,255,0.90));
+      color: white;
+      padding: 12px 14px;
+      border-radius: 14px;
+      font-weight: 650;
+      cursor: pointer;
+      transition: 160ms ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      user-select: none;
+    }
+    .btn:hover{ transform: translateY(-1px); filter: brightness(1.03); }
+    .btn:active{ transform: translateY(0px); filter: brightness(0.98); }
+
+    .btn.secondary{
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .hint{
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.35;
+    }
+
+    .status{
+      margin-top: 12px;
+      border-radius: 14px;
+      padding: 12px 12px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.05);
+      color: var(--muted);
+      white-space: pre-wrap;
+    }
+
+    .status.ok{
+      border-color: rgba(55,214,122,0.45);
+      background: rgba(55,214,122,0.08);
+      color: rgba(234,240,255,0.95);
+    }
+
+    .status.err{
+      border-color: rgba(255,92,122,0.55);
+      background: rgba(255,92,122,0.08);
+      color: rgba(234,240,255,0.95);
+    }
+
+    .preview{
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 16px;
+      border: 1px dashed rgba(255,255,255,0.22);
+      background: rgba(255,255,255,0.03);
+    }
+
+    .preview h3{
+      margin: 0 0 10px 0;
+      font-size: 1rem;
+    }
+
+    .kv{
+      display: grid;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.35;
+    }
+
+    .kv b{ color: var(--text); }
+    .footer{
+      margin-top: 18px;
+      color: rgba(234,240,255,0.50);
+      font-size: 0.85rem;
+    }
+
+    /* Accessibilité */
+    .sr-only{
+      position:absolute;
+      width:1px;height:1px;
+      padding:0;margin:-1px;overflow:hidden;
+      clip:rect(0,0,0,0);white-space:nowrap;border:0;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="wrap">
+    <!-- Colonne gauche : présentation -->
+    <section class="hero" aria-labelledby="titre-page">
+      <h1 id="titre-page">Ma page de contact</h1>
+      <p class="subtitle">
+        Une question, un besoin, un retour ? Écris-nous via le formulaire.
+        On lit chaque message avec attention.
+      </p>
+
+      <div class="infoGrid" aria-label="Informations de contact">
+        <div class="pill">
+          <div class="icon" aria-hidden="true">✉️</div>
+          <div>
+            <b>Email</b>
+            <span>contact@exemple.com</span>
+          </div>
+        </div>
+
+        <div class="pill">
+          <div class="icon" aria-hidden="true">📍</div>
+          <div>
+            <b>Localisation</b>
+            <span>Paris, France</span>
+          </div>
+        </div>
+
+        <div class="pill">
+          <div class="icon" aria-hidden="true">🕒</div>
+          <div>
+            <b>Horaires</b>
+            <span>Lun–Ven, 09:00–18:00</span>
+          </div>
+        </div>
+
+        <div class="pill">
+          <div class="icon" aria-hidden="true">⚡</div>
+          <div>
+            <b>Réponse</b>
+            <span>Généralement sous 24–48h</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="footer">
+        Astuce : sois le plus précis possible dans ton message (contexte, objectif, délai).
+      </p>
+    </section>
+
+    <!-- Colonne droite : formulaire -->
+    <section class="card" aria-labelledby="titre-form">
+      <h2 id="titre-form">Écris-nous</h2>
+
+      <form id="contactForm" novalidate>
+        <div class="row">
+          <div>
+            <label for="prenom">Prénom</label>
+            <input id="prenom" name="prenom" type="text" placeholder="Ex : Marie" autocomplete="given-name" required />
+          </div>
+          <div>
+            <label for="nom">Nom</label>
+            <input id="nom" name="nom" type="text" placeholder="Ex : Dupont" autocomplete="family-name" required />
+          </div>
+        </div>
+
+        <div>
+          <label for="email">Email (optionnel)</label>
+          <input id="email" name="email" type="email" placeholder="Ex : marie.dupont@email.com" autocomplete="email" />
+        </div>
+
+        <div>
+          <label for="message">Message</label>
+          <textarea id="message" name="message" placeholder="Écris ton message ici..." required></textarea>
+        </div>
+
+        <div class="actions">
+          <button class="btn" type="submit" aria-label="Envoyer le message">
+            <span aria-hidden="true">📨</span>
+            Envoyer
+          </button>
+
+          <button class="btn secondary" type="button" id="resetBtn">
+            Réinitialiser
+          </button>
+
+          <p class="hint" id="hint">
+            En cliquant sur “Envoyer”, un aperçu s’affiche ci-dessous (simulation).
+          </p>
+        </div>
+
+        <div id="status" class="status" role="status" aria-live="polite">
+          Remplis le formulaire puis clique sur “Envoyer”.
+        </div>
+
+        <div id="preview" class="preview" hidden>
+          <h3>Aperçu du message</h3>
+          <div class="kv">
+            <div><b>Prénom :</b> <span id="pPrenom"></span></div>
+            <div><b>Nom :</b> <span id="pNom"></span></div>
+            <div><b>Email :</b> <span id="pEmail"></span></div>
+            <div><b>Message :</b></div>
+            <div id="pMessage" style="color: rgba(234,240,255,0.85);"></div>
+          </div>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <script>
+    const form = document.getElementById('contactForm');
+    const statusEl = document.getElementById('status');
+    const previewEl = document.getElementById('preview');
+    const resetBtn = document.getElementById('resetBtn');
+
+    const pPrenom = document.getElementById('pPrenom');
+    const pNom = document.getElementById('pNom');
+    const pEmail = document.getElementById('pEmail');
+    const pMessage = document.getElementById('pMessage');
+
+    function setStatus(message, type) {
+      statusEl.textContent = message;
+      statusEl.classList.remove('ok', 'err');
+      if (type === 'ok') statusEl.classList.add('ok');
+      if (type === 'err') statusEl.classList.add('err');
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const prenom = form.prenom.value.trim();
+      const nom = form.nom.value.trim();
+      const email = form.email.value.trim();
+      const message = form.message.value.trim();
+
+      // validations simples
+      if (!prenom || !nom || !message) {
+        setStatus("⚠️ Merci de remplir Prénom, Nom et Message.", "err");
+        previewEl.hidden = true;
+        return;
+      }
+
+      if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        setStatus("⚠️ L'email semble incorrect. Exemple : nom@domaine.com", "err");
+        previewEl.hidden = true;
+        return;
+      }
+
+      // afficher un aperçu (simulation d’envoi)
+      pPrenom.textContent = prenom;
+      pNom.textContent = nom;
+      pEmail.textContent = email || "(non renseigné)";
+      pMessage.innerHTML = escapeHtml(message).replaceAll("\n", "<br>");
+
+      previewEl.hidden = false;
+      setStatus("✅ Message prêt ! (Simulation) — tu peux maintenant le brancher à un backend pour l’envoyer réellement.", "ok");
+
+      // Ici, tu pourras remplacer la simulation par un vrai envoi, ex:
+      // fetch("/contact", { method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify({prenom, nom, email, message}) })
+    });
+
+    resetBtn.addEventListener('click', () => {
+      form.reset();
+      previewEl.hidden = true;
+      setStatus("Remplis le formulaire puis clique sur “Envoyer”.");
+      document.getElementById('prenom').focus();
+    });
+  </script>
+</body>
+</html>
