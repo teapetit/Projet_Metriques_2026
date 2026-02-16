@@ -40,7 +40,7 @@
       }
     }
 
-    async function fetchParisData() {
+    async function fetchNoumeaData() {
       const res = await fetch('/paris', { headers: { 'Accept': 'application/json' } });
 
       if (!res.ok) {
@@ -79,7 +79,7 @@
       data.addRows(rows);
 
       const options = {
-        title: 'Température à Paris (horaire)',
+        title: 'Température à Noumea (horaire)',
         legend: { position: 'bottom' },
         hAxis: {
           title: 'Date/Heure',
