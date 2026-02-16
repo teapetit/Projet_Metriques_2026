@@ -1,52 +1,105 @@
-<html>
-  <head>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-      google.charts.load("current", {packages:["corechart"]});
-      google.charts.setOnLoadCallback(drawChart);
-      function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['Dinosaur', 'Length'],
-          ['Acrocanthosaurus (top-spined lizard)', 12.2],
-          ['Albertosaurus (Alberta lizard)', 9.1],
-          ['Allosaurus (other lizard)', 12.2],
-          ['Apatosaurus (deceptive lizard)', 22.9],
-          ['Archaeopteryx (ancient wing)', 0.9],
-          ['Argentinosaurus (Argentina lizard)', 36.6],
-          ['Baryonyx (heavy claws)', 9.1],
-          ['Brachiosaurus (arm lizard)', 30.5],
-          ['Ceratosaurus (horned lizard)', 6.1],
-          ['Coelophysis (hollow form)', 2.7],
-          ['Compsognathus (elegant jaw)', 0.9],
-          ['Deinonychus (terrible claw)', 2.7],
-          ['Diplodocus (double beam)', 27.1],
-          ['Dromicelomimus (emu mimic)', 3.4],
-          ['Gallimimus (fowl mimic)', 5.5],
-          ['Mamenchisaurus (Mamenchi lizard)', 21.0],
-          ['Megalosaurus (big lizard)', 7.9],
-          ['Microvenator (small hunter)', 1.2],
-          ['Ornithomimus (bird mimic)', 4.6],
-          ['Oviraptor (egg robber)', 1.5],
-          ['Plateosaurus (flat lizard)', 7.9],
-          ['Sauronithoides (narrow-clawed lizard)', 2.0],
-          ['Seismosaurus (tremor lizard)', 45.7],
-          ['Spinosaurus (spiny lizard)', 12.2],
-          ['Supersaurus (super lizard)', 30.5],
-          ['Tyrannosaurus (tyrant lizard)', 15.2],
-          ['Ultrasaurus (ultra lizard)', 30.5],
-          ['Velociraptor (swift robber)', 1.8]]);
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Températures Paris — Google LineChart</title>
 
-        var options = {
-          title: 'Lengths of dinosaurs, in meters',
-          legend: { position: 'none' },
-        };
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
 
-        var chart = new google.visualization.Histogram(document.getElementById('chart_div'));
-        chart.draw(data, options);
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 24px; }
+    #chart { width: 100%; height: 520px; }
+    #status { margin-top: 12px; white-space: pre-wrap; }
+  </style>
+</head>
+
+<body>
+  <h1>Températures horaires — Paris</h1>
+  <div id="chart"></div>
+  <div id="status"></div>
+
+  <script>
+    google.charts.load('current', { packages: ['corechart'] });
+    google.charts.setOnLoadCallback(init);
+
+    let cachedRows = null;
+
+    async function init() {
+      try {
+        const rows = await fetchParisData();
+        cachedRows = rows;
+        drawChart(rows);
+
+        window.addEventListener('resize', () => {
+          if (cachedRows) drawChart(cachedRows);
+        });
+      } catch (err) {
+        showStatus("Erreur: " + (err?.message || err));
+        console.error(err);
       }
-    </script>
-  </head>
-  <body>
-    <div id="chart_div" style="width: 900px; height: 500px;"></div>
-  </body>
+    }
+
+    async function fetchParisData() {
+      const res = await fetch('/paris', { headers: { 'Accept': 'application/json' } });
+
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status} sur /paris`);
+      }
+
+      const json = await res.json();
+
+      // json attendu: [{ datetime: "2026-02-15T00:00", temperature_c: 0.5 }, ...]
+      // Convertir en rows: [Date, Number]
+      const rows = json.map(p => {
+        const dt = toDate(p.datetime);
+        const temp = Number(p.temperature_c);
+        return [dt, temp];
+      });
+
+      // Optionnel: trier par date au cas où
+      rows.sort((a, b) => a[0] - b[0]);
+
+      return rows;
+    }
+
+    function toDate(isoLike) {
+      // "2026-02-15T00:00"
+      // On parse en Date locale. Si tu veux forcer UTC, dis-moi.
+      const [datePart, timePart] = isoLike.split('T');
+      const [y, m, d] = datePart.split('-').map(Number);
+      const [hh, mm] = timePart.split(':').map(Number);
+      return new Date(y, m - 1, d, hh, mm, 0);
+    }
+
+    function drawChart(rows) {
+      const data = new google.visualization.DataTable();
+      data.addColumn('datetime', 'Date/Heure');
+      data.addColumn('number', 'Température (°C)');
+      data.addRows(rows);
+
+      const options = {
+        title: 'Température à Paris (horaire)',
+        legend: { position: 'bottom' },
+        hAxis: {
+          title: 'Date/Heure',
+          format: 'dd/MM HH:mm'
+        },
+        vAxis: {
+          title: '°C'
+        },
+        explorer: { actions: ['dragToZoom', 'rightClickToReset'] }
+      };
+
+      const chart = new google.visualization.LineChart(document.getElementById('chart'));
+      chart.draw(data, options);
+
+      showStatus(`OK — ${rows.length} points chargés depuis /paris`);
+    }
+
+    function showStatus(msg) {
+      document.getElementById('status').textContent = msg;
+    }
+  </script>
+</body>
 </html>
