@@ -38,6 +38,25 @@ def mongraphique2():
 def mapagedecontact():
     return render_template("mapagedecontact.html")
 
+
+@app.get("/noumea")
+def api_noumea():
+    
+    url = "https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&hourly=temperature_2m,precipitation_probability"
+    response = requests.get(url)
+    data = response.json()
+
+    times = data.get("hourly", {}).get("time", [])
+    temps = data.get("hourly", {}).get("temperature_2m", [])
+
+    n = min(len(times), len(temps))
+    result = [
+        {"datetime": times[i], "temperature_c": temps[i]}
+        for i in range(n)
+    ]
+
+    return jsonify(result)
+
 # Ne rien mettre après ce commentaire
     
 if __name__ == "__main__":
