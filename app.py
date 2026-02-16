@@ -57,6 +57,11 @@ def api_noumea():
 
     return jsonify(result)
 
+@app.route("/noumea")
+def monatelier4():
+    return render_template("monatelier4.html")
+
+
 # Ne rien mettre après ce commentaire
     
 if __name__ == "__main__":
